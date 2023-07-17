@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+  profile="dev">
+  <bean id="serviceInfo" class="spring_profile_20230717.ServiceInfo">
+    <property name="ipNumber" value="localhost" />
+    <property name="portNumber" value="9090" />
+  </bean>
+</beans>
+
+<!--
+  profile
+    어플리케이션에서 런타임 환경을 관리할 수 있다
+    테스트 환경을 각각 외부 설정 파일을 통해서 관리하는 예시
+-->

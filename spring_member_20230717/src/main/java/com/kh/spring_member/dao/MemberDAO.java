@@ -59,4 +59,8 @@ public class MemberDAO {
 
     return result;
   }
+
+  public int update(MemberDTO dto) {
+
+  }
 }
