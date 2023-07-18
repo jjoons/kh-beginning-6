@@ -1,8 +1,11 @@
 package com.kh.spring_member_2_20230717;
 
+import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +18,11 @@ public class MemberController {
   @RequestMapping(value = "/", method = RequestMethod.GET)
   public String root() {
     return "redirect:/member/index";
+  }
+
+  @RequestMapping(value = "/member/index", method = RequestMethod.GET)
+  public String index() {
+    return "member/index";
   }
 
   // key
@@ -69,5 +77,67 @@ public class MemberController {
     System.out.println("===== loginForm =====");
 
     return "member/loginForm";
+  }
+
+  @RequestMapping(value = "/member/loginPro")
+  public String loginPro(Member member, Model model) {
+    System.out.println("===== loginPro =====");
+
+    int check = this.dao.checkMember(member);
+    model.addAttribute("id", member.getId());
+    model.addAttribute("check", check);
+
+    return "member/loginPro";
+  }
+
+  @RequestMapping(value = "/member/logout", method = RequestMethod.GET)
+  public String logout(HttpServletRequest req, HttpSession session) {
+    System.out.println("===== logout() =====");
+    session.removeAttribute("log");
+
+    return "member/logout";
+  }
+
+  @RequestMapping(value = "/member/list", method = RequestMethod.GET)
+  public String list(Model model) {
+    System.out.println("===== list() =====");
+
+    ArrayList<Member> memberList = this.dao.getMemberList();
+    model.addAttribute("memberList", memberList);
+
+    return "member/list";
+  }
+
+  @RequestMapping(value = "/member/modifyForm", method = RequestMethod.GET)
+  public String modifyForm(Model model, HttpSession session) {
+    String id = (String) session.getAttribute("log");
+
+    if (id != null) {
+      Member member = this.dao.getOneMember(id);
+      member.setId(id);
+      model.addAttribute("member", member);
+    }
+
+    return "member/modifyForm";
+  }
+
+  @RequestMapping(value = "/member/modifyPro", method = RequestMethod.POST)
+  public String modifyPro(Model model, HttpSession session, String pw, String email) {
+    String id = (String) session.getAttribute("log");
+    if (id == null) {
+      return "redirect:loginForm";
+    }
+
+    Member member = this.dao.getOneMember(id);
+
+    if (member != null) {
+      member.setPw(pw);
+      member.setEmail(email);
+      this.dao.updateMember(member);
+
+      model.addAttribute("result", true);
+    }
+
+    return "redirect:/member/userMenu";
   }
 }

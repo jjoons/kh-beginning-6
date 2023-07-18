@@ -9,8 +9,8 @@
 <body>
 	<h1>스프링 CRUD</h1>
 	
-	<a herf="${cp}/member/userMenu"> 사용자 메뉴 </a> <br/>
-	<a herf="${cp}/member/list"> 관리자 메뉴 </a> <br/>
+	<a href="${cp}/member/userMenu"> 사용자 메뉴 </a> <br/>
+	<a href="${cp}/member/list"> 관리자 메뉴 </a> <br/>
 	
 
 </body>
