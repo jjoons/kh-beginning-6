@@ -6,31 +6,6 @@
   <title>Insert title here</title>
 </head>
 <body>
-<h1>회원 로그인</h1>
-  <form action="${cp}/member/loginPro" method="post">
-    <table>
-      <tr>
-        <td>아이디</td>
-        <td><input type="text" name="id" ></td>
-      </tr>
-      <tr>
-        <td>패스워드</td>
-        <td><input type="password" name="pw" ></td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <input type="submit" value="로그인">
-        </td>
-      </tr>
-    </table>
-  </form>
-  <br>
-  
-  <a href="${cp}/member/index">메인으로</a>
-</body>
-</html>
-
-<!--
   <h2>MEMBER LOGIN</h2>
   <form action="login_pro" method="post">
     <label>ID</label>
@@ -42,4 +17,5 @@
     <button type="submit">Login</button>
   </form>
   <a href="main">MAIN</a>
--->
+</body>
+</html>

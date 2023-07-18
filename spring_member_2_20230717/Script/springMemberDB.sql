@@ -9,7 +9,7 @@ CREATE TABLE member(
 );
 
 delete from member where num=3;
-drop table member;
+-- drop table member;
 SELECT * FROM member;
 
 SELECT * FROM member ORDER BY num ASC;
