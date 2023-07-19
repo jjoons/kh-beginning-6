@@ -1,0 +1,5 @@
+/src/main/webapp/resources/file/*
+/src/main/webapp/resources/img/*
+/src/main/webapp/resources/jq/*
+
+!.gitkeep

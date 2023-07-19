@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+  <!-- MvcBoardVO 클래스 bean -->
+  <bean id="mvcBoardVO" class="com.kh.spring_web_ojdbc_template_20230719.vo.MvcBoardVO" />
+  
+  <!-- MvcBoardList 클래스 Bean -->
+  <bean id="mvcBoardList" class="com.kh.spring_web_ojdbc_template_20230719.vo.MvcBoardList" />
+  
+  <!-- Service 클래스 Bean -->
+  <bean id="contentView" class="com.kh.spring_web_ojdbc_template_20230719.service.ContentViewService" />
+  <bean id="insert" class="com.kh.spring_web_ojdbc_template_20230719.service.InsertService" />
+  
+  <!-- MvcBoardDAO 클래스 Bean -->
+  <bean id="mvcBoardDAO" class="com.kh.spring_web_ojdbc_template_20230719.dao.MvcBoardDAO" />
+</beans>
