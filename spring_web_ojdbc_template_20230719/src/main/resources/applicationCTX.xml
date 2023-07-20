@@ -11,6 +11,7 @@
   <!-- Service 클래스 Bean -->
   <bean id="contentView" class="com.kh.spring_web_ojdbc_template_20230719.service.ContentViewService" />
   <bean id="insert" class="com.kh.spring_web_ojdbc_template_20230719.service.InsertService" />
+  <bean id="select" class="com.kh.spring_web_ojdbc_template_20230719.service.SelectService" />
   
   <!-- MvcBoardDAO 클래스 Bean -->
   <bean id="mvcBoardDAO" class="com.kh.spring_web_ojdbc_template_20230719.dao.MvcBoardDAO" />

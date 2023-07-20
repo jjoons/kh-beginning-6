@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.kh.spring_web_ojdbc_template_20230719.service.InsertService;
 import com.kh.spring_web_ojdbc_template_20230719.service.MvcBoardService;
+import com.kh.spring_web_ojdbc_template_20230719.service.SelectService;
 
 @Controller
 public class HomeController {
@@ -88,5 +90,24 @@ public class HomeController {
     service.execute(model);
 
     return "redirect:list";
+  }
+
+  @RequestMapping("/list")
+  public String list(HttpServletRequest request, Model model) {
+    logger.info("list");
+    model.addAttribute("request", request);
+
+    AbstractApplicationContext ctx =
+        new GenericXmlApplicationContext("classpath:applicationCTX.xml");
+
+    /*
+     * 인터페이스로 구현한 메소드를 가지고 있고
+     * 밑에 있는 인터페이스로 구현한 객체들을 공통적으로 저장할 수 있다
+     */
+    MvcBoardService service = ctx.getBean("select", SelectService.class);
+    //    logger.info("{}");
+
+    // list.jsp로 넘겨줄 데이터를 model 인터페이스 객체에 넣어준다
+    return "list";
   }
 }

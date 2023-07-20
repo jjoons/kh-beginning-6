@@ -2,6 +2,8 @@ package com.kh.spring_web_ojdbc_template_20230719.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -80,6 +82,25 @@ public class MvcBoardDAO {
     return template.queryForObject(sql, Integer.class);
   }
 
+  public ArrayList<MvcBoardVO> selectList(HashMap<String, Integer> hmap) {
+    /*
+     * JdbcTemplate을 사용할 경우 SELECT SQL 명령에만 "?"를 사용할 수 없다
+     * "?" 자리에 데이터가 저장된 변수를 직접 사용해야한다
+     */
+    String sql = "SELECT * FROM (" + "SELECT ROWNUM rnum, AA.* FROM ("
+        + "select * from mvcboard order by gup desc, seq asc" + "    ) AA where rownum <= "
+        + hmap.get("endNo") + ") where rnum >= " + hmap.get("startNo");
+
+    /* query(SQL 명령, new BeanPropertyRowMapper(리턴할 클래스.class)
+     * SQL 명령이 실행 결과를 BeanPropertyRowMapper 클래스 생성자 인수로
+     * MvcBoardBO 클래스를 넘겨서 SQL 명령 실행 결과를 저장시켜서 리턴한다
+     * query() 메소드 실행 결과가 List 인터페이스로 저장된다
+     * 그렇기 때문에 ArrayList 타입으로 형 변환해야 한다
+     */
+    return (ArrayList<MvcBoardVO>) this.template.query(sql,
+        new BeanPropertyRowMapper(MvcBoardVO.class));
+  }
+
   // 게시글 1개 가져오기
   public MvcBoardVO selectByIdx(int idx) {
     logger.info("selectByIdx()");
@@ -96,4 +117,19 @@ public class MvcBoardDAO {
     this.template.update(sql);
   }
 
+
+  public void increment(int idx) {
+    String sql = "UPDATE mvcboard SET hit = hit + 1 WHERE idx = " + idx;
+    this.template.update(sql);
+  }
+
+  // 실제 내용을 수정하는 메소드
+  public void update(final int idx, final String subject, final String content) {
+    logger.info("update(idx, subject, content)");
+
+    // 서식 문자: %s 문자, %c 한 문자, %d 정수, %lf 실수
+    String sql = String.format("UPDATE mvcboard SET subject = %s, content = %s WHERE idx = %d",
+        subject, content, idx);
+    this.template.update(sql);
+  }
 }
