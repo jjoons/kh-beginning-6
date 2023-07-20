@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd"
+ xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans">
+
+  <bean id="propertyPlaceholderConfigurer"
+    class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+  >
+    <property name="locations">
+      <value>/WEB-INF/config/jdbc/jdbc.properties</value>
+    </property>
+  </bean>
+
+  <bean id="dataSource" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+    <property name="driver" value="${jdbc.driverClassName}" />
+    <property name="url" value="${jdbc.url}" />
+    <property name="username" value="${jdbc.username}" />
+    <property name="password" value="${jdbc.password}" />
+  </bean>
+
+  <!--
+    데이터베이스 연결 정보와 데이터베이스에 연결 후 실행할 SQL 명령이 저장된
+    XML 파일 경로를 설정하는 bean을 설정한다
+  -->
+
+  <bean id="sqlSessionFactory"
+    class="org.mybatis.spring.SqlSessionFactoryBean"
+  >
+    <!-- 데이터베이스 연결 정보를 설정한다 -->
+    <property name="dataSource" ref="dataSource" />
+    
+    <!-- typeAlias -->
+    <property name="configLocation"
+      value="classpath:mybatis/model/modelConfig.xml" />
+      
+    <!--
+      실행할 SQL 명령이 저장된 XML 파일의 경로를 설정한다
+      value 속성에 XML 파일이 위치한 패키지 이름과 XML 파일의 경로를 입력한다
+      value 속성에 지정한 패키지에 XML 파일이 없으면 BeanCreateException 발생한다
+    -->
+    <property name="mapperLocations" value="classpath:mybatis/mappers/*.xml" />
+  </bean>
+  
+  <!--
+    데이터베이스 연결 정보, 실행할 SQL 명령이 저장된 XML 파일의 경로를 참조하여
+    MyBatis Mapper로 사용할 bean을 설정한다
+  -->
+
+  <bean id="sqlSession"
+    class="org.mybatis.spring.SqlSessionTemplate">
+    <constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
+  </bean>
+</beans>
