@@ -8,12 +8,16 @@
   <title>관리자 메인</title>
 </head>
 <body>
-  <div>
-    <c:import url="components/header.jsp" />
-    <h3>현황</h3>
-    <div>회원수: ${ customerCount }명</div>
-    <div>등록된 상품 수: ${ registeredItemCount }개</div>
-    <div>누적 주문량: ${ totalBuyCount }건</div>
-  </div>
+  <c:if test="${empty sessionScope.id}">
+    <p>로그인이 필요한 페이지입니다.</p>
+  </c:if>
+  
+  <c:if test="${!empty sessionScope.id}">
+<%--     <c:import url="components/header.jsp" /> --%>
+      <h2>현황</h2>
+      <h3>회원 수 : ${memberCnt}명</h3>
+      <h3>등록된 상품 수 : ${itemCnt}개</h3>
+      <h3>누적 주문량 : ${buyCnt}건</h3>
+  </c:if>
 </body>
 </html>

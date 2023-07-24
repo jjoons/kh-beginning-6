@@ -1,6 +1,5 @@
 package com.kh.d20230719_problem_1.board;
 
-import java.sql.Date;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,7 +18,7 @@ public class BoardDTO {
   private String writer;
   private String title;
   private String pw;
-  private Date reg_date;
+  private String reg_date;
   private int ref;
   private int re_step;
   private int re_level;

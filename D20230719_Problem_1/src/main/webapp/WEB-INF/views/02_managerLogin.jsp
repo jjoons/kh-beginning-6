@@ -6,21 +6,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>로그인</title>
+  <script src="${contextPath}/resources/jq/jquery-1.11.0.min.js"></script>
+  <script src="${contextPath}/resources/js/02_managerlogin.js"></script>
+  <style>
+    ul li{
+      list-style: none;
+    }
+  </style>
 </head>
 <body>
-  <div>
-    <c:import url="components/header.jsp" />
-    <div>
-      <form action="managerLoginPro" method="post">
-        <label for="user_id">아이디</label>
-        <input type="text" name="id" id="user_id" />
-        <br />
-        <label for="user_password">비밀번호</label>
-        <input type="text" name="pw" id="user_password" />
-        <br />
-        <button type="submit">로그인</button>
-      </form>
-    </div>
-  </div>
+  <c:if test="${empty sessionScope.id}">
+    <ul>
+      <li>
+        아이디 <input type="email" id="id" name="id" placeholder="marketkurly">
+        비밀번호 <input type="password" id="pw" name="pw" placeholder="6~16자 숫자/문자">
+        <button id="login">로그인</button>
+      </li>
+    </ul>
+  </c:if>
+  <c:if test="${!empty sessionScope.id}">
+    <ul>
+      <li>관리자님 접속 중
+        <button id="logout">로그아웃</button>
+      </li>
+    </ul>
+  </c:if>
 </body>
 </html>
