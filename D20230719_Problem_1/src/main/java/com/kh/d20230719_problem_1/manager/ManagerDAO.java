@@ -53,54 +53,21 @@ public class ManagerDAO {
   }
 
   public int getOrderCnt() {
-    int cnt = 0;
-    try {
-      conn = dataSource.getConnection();
-
-      String sql = "SELECT COUNT(*) FROM buy";
-      pstmt = conn.prepareStatement(sql);
-      rs = pstmt.executeQuery();
-
-      if (rs.next()) {
-        cnt = rs.getInt(1);
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      if (conn != null) {
-        try {
-          conn.close();
-        } catch (SQLException e) {
-        }
-      }
-      if (pstmt != null) {
-        try {
-          pstmt.close();
-        } catch (SQLException e) {
-        }
-      }
-      if (rs != null) {
-        try {
-          rs.close();
-        } catch (SQLException e) {
-        }
-      }
-    }
-    return cnt;
+    String sql = "SELECT COUNT(*) FROM buy";
+    return this.daoHelper.selectAllCount(sql);
   }
 
 
   public int checkManager(String id, String pw) {
+    String sql = "SELECT * FROM manager WHERE id = ? AND pw = ?";
     int check = 0;
-    try {
-      conn = dataSource.getConnection();
-      System.out.println("id = " + id);
-      System.out.println("pw = " + pw);;
 
-      String sql = "SELECT * FROM manager WHERE id=? AND pw=?";
-      pstmt = conn.prepareStatement(sql);
-      pstmt.setString(1, id);
-      pstmt.setString(2, pw);
+    ResultSet rs = null;
+
+    try (Connection con = this.dataSource.getConnection();
+        PreparedStatement ps = con.prepareStatement(sql)) {
+      ps.setString(1, id);
+      ps.setString(2, pw);
 
       rs = pstmt.executeQuery();
 
@@ -110,83 +77,48 @@ public class ManagerDAO {
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
-      if (conn != null) {
-        try {
-          conn.close();
-        } catch (SQLException e) {
-        }
-      }
-      if (pstmt != null) {
-        try {
-          pstmt.close();
-        } catch (SQLException e) {
-        }
-      }
-      if (rs != null) {
-        try {
-          rs.close();
-        } catch (SQLException e) {
-        }
+      try {
+        rs.close();
+      } catch (SQLException e) {
       }
     }
 
     return check;
   }
 
-  public void insertNewItem(ItemDTO dto) {
-    try {
-      conn = dataSource.getConnection();
+  public int getMaxNum() {
+    String sql = "SELECT MAX(item_number) FROM item";
+    return this.daoHelper.selectAllCount(sql);
+  }
 
-      int maxNum = 0;
-      String sql = "SELECT MAX(item_number) FROM item";
-      pstmt = conn.prepareStatement(sql);
-      rs = pstmt.executeQuery();
+  public int insertNewItem(ItemDTO dto) {
+    String sql =
+        "INSERT INTO item (item_number, item_category, item_name, item_price, item_stock, item_image, item_info, discount_rate, reg_date, sold)";
+    sql += " VALUES(?, ?, ?, ?, ?, ?, ?, ?, now(), 0)";
 
-      if (rs.next()) {
-        maxNum = rs.getInt(1);
-      }
+    try (Connection con = this.dataSource.getConnection();
+        PreparedStatement ps = con.prepareStatement(sql)) {
+      int maxNum = this.getMaxNum();
 
-      sql =
-          "INSERT INTO item (item_number, item_category, item_name, item_price, item_stock, item_image, item_info, discount_rate, reg_date, sold)";
-      sql += " VALUES(?, ?, ?, ?, ?, ?, ?, ?, now(), 0)";
-      pstmt = conn.prepareStatement(sql);
-      pstmt.setInt(1, maxNum + 1);
-      pstmt.setString(2, dto.getItem_category());
-      pstmt.setString(3, dto.getItem_name());
-      pstmt.setInt(4, dto.getItem_price());
-      pstmt.setInt(5, dto.getItem_stock());
-      pstmt.setString(6, dto.getItem_image());
-      pstmt.setString(7, dto.getItem_info());
-      pstmt.setInt(8, dto.getDiscount_rate());
+      ps.setInt(1, maxNum + 1);
+      ps.setString(2, dto.getItem_category());
+      ps.setString(3, dto.getItem_name());
+      ps.setInt(4, dto.getItem_price());
+      ps.setInt(5, dto.getItem_stock());
+      ps.setString(6, dto.getItem_image());
+      ps.setString(7, dto.getItem_info());
+      ps.setInt(8, dto.getDiscount_rate());
 
-      pstmt.executeUpdate();
-
+      return ps.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
-    } finally {
-      if (conn != null) {
-        try {
-          conn.close();
-        } catch (SQLException e) {
-        }
-      }
-      if (pstmt != null) {
-        try {
-          pstmt.close();
-        } catch (SQLException e) {
-        }
-      }
-      if (rs != null) {
-        try {
-          rs.close();
-        } catch (SQLException e) {
-        }
-      }
     }
+
+    return -1;
   }
 
   public ArrayList<ItemDTO> getOneItem(int item_number) {
-    ArrayList<ItemDTO> list = new ArrayList<ItemDTO>();
+    ArrayList<ItemDTO> list = new ArrayList<>();
 
     try {
       conn = dataSource.getConnection();

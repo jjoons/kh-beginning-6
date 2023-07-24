@@ -14,28 +14,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import com.kh.d20230719_problem_1.board.BoardDAO;
-import com.kh.d20230719_problem_1.buy.BuyDAO;
 import com.kh.d20230719_problem_1.buy.BuyDTO;
-import com.kh.d20230719_problem_1.cart.CartDAO;
-import com.kh.d20230719_problem_1.customer.CustomerDAO;
 import com.kh.d20230719_problem_1.item.ItemDAO;
 import com.kh.d20230719_problem_1.item.ItemDTO;
 
 @Controller
-@RequestMapping("/manager")
+//@RequestMapping("/manager")
 public class ManagerController {
-  @Autowired
-  private BoardDAO boardDAO;
-
-  @Autowired
-  private BuyDAO buyDAO;
-
-  @Autowired
-  private CartDAO cartDAO;
-
-  @Autowired
-  private CustomerDAO customerDAO;
+  //  @Autowired
+  //  private BoardDAO boardDAO;
+  //
+  //  @Autowired
+  //  private BuyDAO buyDAO;
+  //
+  //  @Autowired
+  //  private CartDAO cartDAO;
+  //
+  //  @Autowired
+  //  private CustomerDAO customerDAO;
 
   @Autowired
   private ItemDAO itemDAO;
@@ -57,8 +53,7 @@ public class ManagerController {
     session.removeAttribute(ManagerConstant.MANAGER_SESSION_ATTRIBUTE_LOGIN_ID);
   }
 
-
-  @RequestMapping(value = "/index", method = RequestMethod.GET)
+  @RequestMapping(value = "/index.do", method = RequestMethod.GET)
   public String index(HttpSession session, Model model) {
     model.addAttribute("type", 1);
     model.addAttribute("cont", "00_shopMain.jsp");
@@ -66,7 +61,7 @@ public class ManagerController {
     return "00_index";
   }
 
-  @RequestMapping(value = "/managerMain", method = RequestMethod.GET)
+  @RequestMapping(value = "/managerMain.do", method = RequestMethod.GET)
   public String managerMain(HttpSession session, Model model) {
     if (!this.isLogin(session)) {
       return "redirect:managerLogin";
@@ -86,7 +81,7 @@ public class ManagerController {
     return "00_index";
   }
 
-  @RequestMapping(value = "/managerLogin", method = RequestMethod.GET)
+  @RequestMapping(value = "/managerLogin.do", method = RequestMethod.GET)
   public String managerLogin(HttpSession session, Model model) {
     if (this.isLogin(session)) {
       return "redirect:managerMain";
@@ -98,7 +93,7 @@ public class ManagerController {
     return "00_index";
   }
 
-  @RequestMapping(value = "/managerLoginPro", method = RequestMethod.POST)
+  @RequestMapping(value = "/managerLoginPro.do", method = RequestMethod.POST)
   public String managerLoginPro(Model model, HttpSession session, String id, String pw) {
     if (this.isLogin(session)) {
       return "redirect:managerMain";
@@ -119,7 +114,7 @@ public class ManagerController {
     return "00_index";
   }
 
-  @RequestMapping(value = "/managerLogout", method = RequestMethod.GET)
+  @RequestMapping(value = "/managerLogout.do", method = RequestMethod.GET)
   public String managerLoginPro(HttpSession session, Model model) {
     session.removeAttribute(ManagerConstant.MANAGER_SESSION_ATTRIBUTE_LOGIN_ID);
     // 관리자(0)
@@ -129,7 +124,7 @@ public class ManagerController {
     return "redirect:managerLogin";
   }
 
-  @RequestMapping(value = "/addNewItem", method = RequestMethod.GET)
+  @RequestMapping(value = "/addNewItem.do", method = RequestMethod.GET)
   public String addNewItem(HttpSession session) {
     if (!this.isLogin(session)) {
       return "redirect:managerLogin";

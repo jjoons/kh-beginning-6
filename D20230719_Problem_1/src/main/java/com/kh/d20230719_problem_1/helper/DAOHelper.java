@@ -23,6 +23,11 @@ public class DAOHelper {
       }
     } catch (SQLException e) {
       e.printStackTrace();
+    } finally {
+      try {
+        rs.close();
+      } catch (SQLException e) {
+      }
     }
 
     return -1;
