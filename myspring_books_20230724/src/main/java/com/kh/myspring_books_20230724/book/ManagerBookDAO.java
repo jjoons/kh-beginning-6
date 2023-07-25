@@ -27,4 +27,16 @@ public class ManagerBookDAO {
 
     return bookList;
   }
+
+  public void insert(ManagerBookVO book) {
+    /*
+     * 기존에 게시글 수가 몇 개인지 가져오는 SQL 명령문을 실행하고
+     * 개수를 저장하고 새로운 게시글 + 1 해서 insert("sql id", "객체")
+     * 
+     */
+    int num = sqlSession.selectOne("mapper.manager.getBookCount");
+    num += 1;
+
+    sqlSession.insert("mapper.manager.");
+  }
 }

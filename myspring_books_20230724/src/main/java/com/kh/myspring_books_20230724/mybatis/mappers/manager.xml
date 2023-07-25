@@ -19,6 +19,38 @@
     ]]>
   </select>
   
+  <insert id="insertBook" parameterType="managerBookVo">
+    <![CDATA[
+      INSERT INTO book(
+        book_id,
+        book_kind,
+        book_title,
+        book_price,
+        book_count,
+        author,
+        publishing_com,
+        publishing_date,
+        book_image,
+        book_content,
+        discount_rate,
+        reg_date
+      ) VALUES (
+        ${book_id},
+        ${book_kind},
+        ${book_title},
+        ${book_price},
+        ${book_count},
+        ${author},
+        ${publishing_com},
+        ${publishing_date},
+        ${book_image},
+        ${book_content},
+        ${discount_rate},
+        NOW()
+      )
+    ]]>
+  </insert>
+  
   <select id="selectKindList" parameterType="string" resultMap="bookResult">
     <![CDATA[
       SELECT * FROM book WHERE book_kind = #{book_kind}

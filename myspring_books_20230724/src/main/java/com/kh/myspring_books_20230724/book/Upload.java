@@ -15,7 +15,6 @@ public class Upload {
     String uploadPath = context.getRealPath(saveFolder);
     System.out.println("realFolder: " + uploadPath);
 
-
     return re;
   }
 }

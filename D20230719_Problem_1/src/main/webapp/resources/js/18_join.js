@@ -1,6 +1,11 @@
 /*
  */
 
+var contextPath = location.pathname.substring(
+  0,
+  location.pathname.indexOf("/", 2)
+);
+
 $(document).ready(function () {
   // 아이디 체크 (중복 확인)
 
