@@ -6,4 +6,37 @@
       SELECT * FROM manager WHERE managerId = #{managerId}
     ]]>
   </select>
+  
+  <select id="getBookCount" resultType="int">
+    <![CDATA[
+      SELECT COUNT(*) FROM book
+    ]]>
+  </select>
+  
+  <select id="selectAllBookList" resultMap="bookResult">
+    <![CDATA[
+      SELECT * FROM book ORDER BY reg_date DESC
+    ]]>
+  </select>
+  
+  <select id="selectKindList" parameterType="string" resultMap="bookResult">
+    <![CDATA[
+      SELECT * FROM book WHERE book_kind = #{book_kind}
+    ]]>
+  </select>
+  
+  <resultMap type="managerBookVo" id="bookResult">
+    <result property="book_id" column="book_id" />
+    <result property="book_kind" column="book_kind" />
+    <result property="book_title" column="book_title" />
+    <result property="book_price" column="book_price" />
+    <result property="book_count" column="book_count" />
+    <result property="author" column="author" />
+    <result property="publishing_com" column="publishing_com" />
+    <result property="publishing_date" column="publishing_date" />
+    <result property="book_image" column="book_image" />
+    <result property="book_content" column="book_content" />
+    <result property="discount_rate" column="discount_rate" />
+    <result property="reg_date" column="reg_date" />
+  </resultMap>
 </mapper>

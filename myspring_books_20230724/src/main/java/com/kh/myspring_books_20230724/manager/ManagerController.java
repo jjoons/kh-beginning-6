@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class ManagerController {
@@ -38,6 +39,13 @@ public class ManagerController {
     request.setAttribute("id", id);
 
     model.addAttribute("cont", "01_03_managerLoginPro.jsp");
+
+    return "00_index";
+  }
+
+  @RequestMapping(value = "/managerLogout.do", method = RequestMethod.POST)
+  public String managerLogout(Model model, HttpServletRequest request) {
+    model.addAttribute("cont", "01_04_managerLogout.jsp");
 
     return "00_index";
   }

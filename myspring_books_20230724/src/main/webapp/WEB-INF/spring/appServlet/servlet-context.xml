@@ -23,6 +23,14 @@
 	
 	<context:component-scan base-package="com.kh.myspring_books_20230724" />
 	
-	
+	<!-- fileUpload -->
+  <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <!--
+      maxUploadSize : 최대 업로드 가능한 바이트 크기
+      maxInMemorySize : 디스크에 임시 파일을 생성하기 전에 메모리에 보관할 수 있는 최대 바이트 크기
+      defaultEncoding : 요청을 파싱할 때 사용할 캐릭터 인코딩. 기본값 ISO-8859-1
+      -->
+    <beans:property name="maxUploadSize" value="10485760" />
+  </beans:bean>
 	
 </beans:beans>
