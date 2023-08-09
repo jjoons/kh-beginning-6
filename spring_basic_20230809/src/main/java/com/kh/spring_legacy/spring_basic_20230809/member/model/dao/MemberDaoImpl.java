@@ -31,6 +31,10 @@ public class MemberDaoImpl implements MemberDao {
 
   @Override
   public Member selectById(String id) {
+    if (id == null) {
+      return null;
+    }
+
     for (int i = 0; i < this.list.size(); i++) {
       Member member = this.list.get(i);
       if (member.getId().equals(id)) {

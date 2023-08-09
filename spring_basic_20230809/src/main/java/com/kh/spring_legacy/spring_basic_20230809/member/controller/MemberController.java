@@ -1,6 +1,7 @@
 package com.kh.spring_legacy.spring_basic_20230809.member.controller;
 
 import java.io.Writer;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -223,7 +224,37 @@ public class MemberController {
      * 실제 저장을 하기 위해서 저장을 시키는 service가 필요하다
      * 아직 객체가 만들어 지지 않아 오류 발생
      */
+    int result = this.service.joinMember(member);
+
+    if (result > 0) {
+      // 성공
+      // addObject(): view로 보낼 파라미터를 처리하는 방법 (model)
+      // setViewName(): return 했던 view의 이름을 설정하는 메소드
+      model.addObject("msg", "회원가입에 성공하였습니다");
+      model.setViewName("member/index");
+    } else {
+      model.setViewName("redirect:error.do");
+    }
 
     return model;
+  }
+
+  @RequestMapping(value = "/member/error.do")
+  public String errorPage(String msg) {
+    System.out.println("오류 발생 로그 출력");
+
+    return "common/error";
+  }
+
+  @RequestMapping("/member/memberList.do")
+  public String memberList(Model model) {
+    List<Member> list = service.getAllList();
+    System.out.println(list);
+    model.addAttribute("list", list);
+    if (list != null) {
+      return "member/memberList";
+    } else {
+      return "redirect:error.do";
+    }
   }
 }
