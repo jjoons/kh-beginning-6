@@ -1,1 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:c="http://www.springframework.org/schema/c"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd"
+>
+  <!--
+    DB 인증정보를 가져와서 Bean 생성
+    Bean 속성에 바로 데이터를 입력할 수 있다
+      p:필드명="값"
+      p:필드명-ref="객체id"
+  -->
+  <bean
+    id="dataSource"
+    class="org.apache.commons.dbcp2.BasicDataSource"
+    destroy-method="close"
+    p:driverClassName="${db.driver}"
+    p:url="${db.url}"
+    p:username="${db.username}"
+    p:password="${db.password}"
+  />
+  
+  <!--
+    XML 파일을 로드할 경우
+  -->
+  <bean
+    id="mybatisConfig"
+    class="org.apache.ibatis.session.Configuration"
+    p:jdbcTypeForNull="NULL"
+  />
+  
+  <!--
+    p:mapperLocations
+      mapper 자동 스캔
+    p:typeAliasesPackage
+      type으로 사용할 객체의 alias를 지동으로 생성하는 명령
+      com.kh.spring.model.vo
+  -->
+  <bean
+    id="sqlSessionFactory"
+    class="org.mybatis.spring.SqlSessionFactoryBean"
+    p:configuration-ref="mybatisConfig"
+    p:mapperLocations="classpath:mappers/**/*.xml"
+    p:dataSource-ref="dataSource"
+    p:typeAliasesPackage="**.model.vo"
+  />
+  <bean
+    id="sqlSessionTemplate"
+    class="org.mybatis.spring.SqlSessionTemplate"
+    c:sqlSessionFactory-ref="sqlSessionFactory"
+  />
+  
+  <!--
+    DAO를 대체할 Mapper Scanning
+  -->
+  <bean
+    id="mapperScannerConfigurer"
+    class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+    p:basePackage="**.model.mapper"
+  />
+</beans>
